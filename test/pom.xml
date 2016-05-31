@@ -29,6 +29,12 @@
             <artifactId>test</artifactId>
             <version>2.0</version>
         </dependency>
+        <!--很尴尬的事儿,讲道理是不依赖的,但是认证服务并没有独立 所以还得依赖一会儿-->
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
+            <artifactId>bracket</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
