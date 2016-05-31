@@ -69,7 +69,7 @@ public abstract class ClassesByActiveMenuProcessor extends AbstractStandardExpre
         String activeMenu = (String) context.getVariable("activeMenu");
         assert activeMenu != null;
 
-        boolean shouldAppendClass = Arrays.binarySearch(value, activeMenu) != -1;
+        boolean shouldAppendClass = Arrays.binarySearch(value, activeMenu) >= 0;
 
         if (!shouldAppendClass)
             return;
@@ -117,6 +117,6 @@ public abstract class ClassesByActiveMenuProcessor extends AbstractStandardExpre
         String[] values = spacer.split(clazz.getValue());
         Arrays.sort(values);
 
-        return Arrays.binarySearch(values, "na-parent") != -1;
+        return Arrays.binarySearch(values, "na-parent") >= 0;
     }
 }
