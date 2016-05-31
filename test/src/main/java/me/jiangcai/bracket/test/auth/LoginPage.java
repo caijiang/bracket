@@ -2,6 +2,7 @@ package me.jiangcai.bracket.test.auth;
 
 import org.luffy.test.page.AbstractPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -48,9 +49,9 @@ public class LoginPage extends AbstractPage {
      */
     public void assertLoginSuccess(String username, String password) {
         doLogin(username, password);
-        try{
+        try {
             reloadPageInfo();
-        }catch (AssertionError ignored){
+        } catch (NoSuchElementException ignored) {
             return;
         }
         throw new AssertionError("Login failed!");
