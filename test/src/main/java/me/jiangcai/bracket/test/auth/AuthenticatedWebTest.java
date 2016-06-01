@@ -1,6 +1,8 @@
 package me.jiangcai.bracket.test.auth;
 
 import me.jiangcai.lib.bracket.auth.AuthenticateService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.model.FrameworkMethod;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @RunWith(AuthenticatedWebTest.AuthenticatedRunner.class)
 public abstract class AuthenticatedWebTest<T extends UserDetails> extends SpringWebTest {
 
+    private static final Log log = LogFactory.getLog(AuthenticatedWebTest.class);
+
     /**
      * net版本
      * TODO 尚未实现
@@ -38,7 +42,9 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends Spring
     @Before
     public void authenticate() throws IllegalAccessException, InstantiationException {
         if (loginType == null) {
-            throw new IllegalStateException("使用AuthenticatedWebTest作为测试基类那么需要使用@LoginAs标注声明所登录的角色.");
+            log.warn("can not authenticate without @LoginAs");
+            return;
+//            throw new IllegalStateException("使用AuthenticatedWebTest作为测试基类那么需要使用@LoginAs标注声明所登录的角色.");
         }
         driver.manage().deleteAllCookies();
 
