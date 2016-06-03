@@ -78,8 +78,8 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends Spring
         Element password = findPasswordInput(loginForm);
 
         mockMvc.perform(post(loginForm.attr("action")).session(session)
-                .param(username.attr("name"), "")
-                .param(password.attr("name"), "")
+                .param(username.attr("name"), currentUser.getUsername())
+                .param(password.attr("name"), rawPassword)
         );
 
     }
