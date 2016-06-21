@@ -44,6 +44,7 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends Spring
     protected T currentUser;
     @Autowired
     protected AuthenticateService<T> authenticateService;
+    private String loginPageUri;
 
 
     @Before
@@ -65,11 +66,12 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends Spring
 
         loginPage.assertLoginSuccess(currentUser.getUsername(), rawPassword);
 
-
-        session = new MockHttpSession(servletContext);
-
-        MvcResult indexResult = mockMvc.perform(get("").session(session))
+        // MVC
+        loginPageUri = "";
+        MvcResult indexResult = mockMvc.perform(get(""))
                 .andReturn();
+
+        session = (MockHttpSession) indexResult.getRequest().getSession(true);
 
         Document document = documentFrom(indexResult);
         Element loginForm = findLoginForm(document.getElementsByTag("form"));
@@ -77,11 +79,22 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends Spring
         Element username = findUsernameInput(loginForm);
         Element password = findPasswordInput(loginForm);
 
-        mockMvc.perform(post(loginForm.attr("action")).session(session)
+        String actionUri;
+        String actionValue = loginForm.attr("action");
+        if (!actionValue.startsWith("/")) {
+            int lastIndex = loginPageUri.lastIndexOf("/");
+            if (lastIndex == -1)
+                actionUri = actionValue;
+            else {
+                actionUri = loginPageUri.substring(0, lastIndex + 1) + actionValue;
+            }
+        } else
+            actionUri = actionValue;
+
+        mockMvc.perform(post(actionUri).session(session)
                 .param(username.attr("name"), currentUser.getUsername())
                 .param(password.attr("name"), rawPassword)
         );
-
     }
 
 
@@ -131,8 +144,9 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends Spring
             return Jsoup.parse(result.getResponse().getContentAsString());
         }
         if (result.getResponse().getStatus() == 302) {
-            return documentFrom(mockMvc.perform(get(result.getResponse().encodeRedirectURL(result
-                    .getResponse().getRedirectedUrl())).session(session)).andReturn());
+            loginPageUri = result.getResponse().encodeRedirectURL(result
+                    .getResponse().getRedirectedUrl());
+            return documentFrom(mockMvc.perform(get(loginPageUri).session(session)).andReturn());
         }
         throw new IllegalStateException("" + result.getResponse().getStatus());
     }
