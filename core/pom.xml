@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>me.jiangcai.lib</groupId>
-            <artifactId>test</artifactId>
+            <artifactId>spring</artifactId>
             <version>${lib.version}</version>
             <scope>test</scope>
         </dependency>
