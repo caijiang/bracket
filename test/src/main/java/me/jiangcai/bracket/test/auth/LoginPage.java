@@ -1,6 +1,6 @@
 package me.jiangcai.bracket.test.auth;
 
-import org.luffy.test.page.AbstractPage;
+import me.jiangcai.lib.test.page.AbstractPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;

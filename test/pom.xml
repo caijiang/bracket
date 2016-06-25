@@ -26,6 +26,11 @@
     <dependencies>
         <dependency>
             <groupId>me.jiangcai.lib</groupId>
+            <artifactId>spring</artifactId>
+            <version>${lib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>me.jiangcai.lib</groupId>
             <artifactId>test</artifactId>
             <version>${lib.version}</version>
         </dependency>

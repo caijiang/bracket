@@ -1,8 +1,8 @@
 package me.jiangcai.lib.bracket.thymeleaf.process;
 
 import me.jiangcai.lib.bracket.TestConfig;
+import me.jiangcai.lib.test.SpringWebTest;
 import org.junit.Test;
-import org.luffy.test.SpringWebTest;
 import org.openqa.selenium.By;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;

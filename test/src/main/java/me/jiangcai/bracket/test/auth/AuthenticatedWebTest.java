@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
-import org.luffy.test.SpringWebTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 @SuppressWarnings("WeakerAccess")
 @RunWith(AuthenticatedWebTest.AuthenticatedRunner.class)
-public abstract class AuthenticatedWebTest<T extends UserDetails> extends SpringWebTest {
+public abstract class AuthenticatedWebTest<T extends UserDetails> extends me.jiangcai.lib.test.SpringWebTest {
 
     private static final Log log = LogFactory.getLog(AuthenticatedWebTest.class);
 
