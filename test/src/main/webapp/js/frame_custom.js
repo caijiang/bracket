@@ -9,6 +9,9 @@ jQuery(window).load(function () {
 
 jQuery(document).ready(function () {
 
+    // 调整下在iframe环境中 mainpanel的位置问题
+    $('.mainpanel').css('margin-left','0px');
+
     function adjustmainpanelheight() {
         // Adjust mainpanel height
         var docHeight = jQuery(document).height();

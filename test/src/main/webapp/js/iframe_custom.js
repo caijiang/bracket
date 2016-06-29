@@ -141,7 +141,7 @@ jQuery(document).ready(function () {
             if (!body.hasClass('leftpanel-collapsed')) {
                 body.addClass('leftpanel-collapsed');
                 frameBody.addClass('leftpanel-collapsed');
-                frameBody.css('margin-left','0');
+                // frameBody.css('margin-left','0');
                 jQuery('.nav-bracket ul').attr('style', '');
 
                 jQuery(this).addClass('menu-collapsed');
@@ -149,7 +149,7 @@ jQuery(document).ready(function () {
             } else {
                 body.removeClass('leftpanel-collapsed chat-view');
                 frameBody.removeClass('leftpanel-collapsed chat-view');
-                frameBody.css('margin-left','');
+                // frameBody.css('margin-left','');
                 jQuery('.nav-bracket li.active ul').css({display: 'block'});
 
                 jQuery(this).removeClass('menu-collapsed');
@@ -160,11 +160,11 @@ jQuery(document).ready(function () {
             if (body.hasClass('leftpanel-show')){
                 body.removeClass('leftpanel-show');
                 frameBody.removeClass('leftpanel-show');
-                frameBody.css('margin-left','');
+                // frameBody.css('margin-left','');
             }else{
                 body.addClass('leftpanel-show');
                 frameBody.addClass('leftpanel-show');
-                frameBody.css('margin-left','0');
+                // frameBody.css('margin-left','0');
             }
 
             adjustmainpanelheight();
