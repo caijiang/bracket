@@ -24,4 +24,10 @@ public @interface LoginAs {
      */
     String[] value();
 
+    /**
+     * @return 第一个访问的URI, 默认是/
+     * @since 1.1
+     */
+    String indexUri() default "/";
+
 }

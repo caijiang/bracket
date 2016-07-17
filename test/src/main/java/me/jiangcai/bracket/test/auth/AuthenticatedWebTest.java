@@ -1,6 +1,8 @@
 package me.jiangcai.bracket.test.auth;
 
 import me.jiangcai.lib.bracket.auth.AuthenticateService;
+import me.jiangcai.lib.test.page.AbstractPage;
+import me.jiangcai.lib.test.page.AbstractPageAssert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
@@ -39,12 +41,21 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends me.jia
      * net版本
      */
     protected MockHttpSession session;
-    private LoginAs loginType;
     protected T currentUser;
     @Autowired
     protected AuthenticateService<T> authenticateService;
+    private LoginAs loginType;
     private String loginPageUri;
 
+    /**
+     * 断言登录页面
+     *
+     * @param pageAssert 页面断言
+     * @since 1.1
+     */
+    protected void assertLoginPage(AbstractPageAssert<?, ? extends AbstractPage> pageAssert) {
+
+    }
 
     @Before
     public void authenticate() throws Exception {
@@ -60,8 +71,11 @@ public abstract class AuthenticatedWebTest<T extends UserDetails> extends me.jia
         String rawPassword = UUID.randomUUID().toString();
         currentUser = authenticateService.changePassword(currentUser, rawPassword);
 
-        driver.get("http://localhost");
+        driver.get("http://localhost" + loginType.indexUri());
         LoginPage loginPage = initPage(LoginPage.class);
+
+        AbstractPageAssert<?, ? extends AbstractPage> abstractPageAssert = loginPage.assertMe();
+        assertLoginPage(abstractPageAssert);
 
         loginPage.assertLoginSuccess(currentUser.getUsername(), rawPassword);
 
