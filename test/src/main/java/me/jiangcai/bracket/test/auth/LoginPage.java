@@ -21,8 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LoginPage extends AbstractPage {
     private WebElement username;
     private WebElement password;
-    @FindBy(css = "button[class~=btn-success]")
-    private WebElement submitButton;
+    //    @FindBy(css = "button[class~=btn-success]")
+//    private WebElement submitButton;
     @FindBy(className = "logopanel")
     private WebElement logoPanel;
 
@@ -63,7 +63,28 @@ public class LoginPage extends AbstractPage {
         this.username.sendKeys(username);
         this.password.clear();
         this.password.sendKeys(password);
-        submitButton.click();
+        // 寻找登录的按钮
+
+        List<WebElement> buttons = webDriver.findElements(By.cssSelector("button[class~=btn-success]"));
+        if (!buttons.isEmpty()) {
+            buttons.get(0).click();
+            return;
+        }
+
+        buttons = webDriver.findElements(By.cssSelector("input[type=submit]"));
+        if (!buttons.isEmpty()) {
+            buttons.get(0).click();
+            return;
+        }
+
+        buttons = webDriver.findElements(By.tagName("form"));
+        if (!buttons.isEmpty()) {
+            buttons.get(0).submit();
+            return;
+        }
+
+        this.username.submit();
+//        submitButton.click();
     }
 //
 //    public LoginPage assertLoginWithBadUsername(String username, String password) {
