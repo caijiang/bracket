@@ -1,5 +1,6 @@
 package me.jiangcai.bracket.test;
 
+import com.google.common.base.Predicate;
 import me.jiangcai.lib.test.page.AbstractPage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,6 +26,20 @@ public abstract class BracketPage extends AbstractPage {
 
     public BracketPage(WebDriver webDriver) {
         super(webDriver);
+        // 如果找到了preloader 那就一直等待 直到消失
+        try {
+            waitOn((driverFluentWait) -> driverFluentWait.until(new Predicate<WebDriver>() {
+                @Override
+                public boolean apply(@Nullable WebDriver input) {
+                    if (input == null)
+                        return false;
+                    List<WebElement> elements = input.findElements(By.id("preloader"));
+                    return elements.isEmpty() || !elements.get(0).isDisplayed();
+                }
+            }));
+        } catch (InterruptedException e) {
+            throw new InternalError(e);
+        }
     }
 
     @Override
@@ -83,7 +99,7 @@ public abstract class BracketPage extends AbstractPage {
     /**
      * @param element 点击这个东西
      */
-    private void clickElement(WebElement element) {
+    protected void clickElement(WebElement element) {
         try {
             element.findElement(By.tagName("a")).click();
         } catch (NoSuchElementException ignored) {
@@ -122,6 +138,18 @@ public abstract class BracketPage extends AbstractPage {
      * @return li webElement,没有找到则会返回null
      */
     public WebElement findMenuLiByClass(String className) {
+        return findMenuLiByClass(className, false);
+    }
+
+    /**
+     * 根据className定位菜单li
+     *
+     * @param className     比如fa-home
+     * @param includeParent 包括nav-parent
+     * @return li webElement,没有找到则会返回null
+     * @since 2.2
+     */
+    public WebElement findMenuLiByClass(String className, boolean includeParent) {
         // 排除掉 mb30,nav-justified class 或者在 visible-xs内
         //
         List<WebElement> ulList = webDriver.findElements(By.cssSelector("ul[class~=nav]"));
@@ -147,6 +175,8 @@ public abstract class BracketPage extends AbstractPage {
             // 排除上级菜单
             if (element.getAttribute("class") != null && element.getAttribute("class").contains("nav-parent")) {
                 parentElement = element;
+                if (includeParent)
+                    return parentElement;
                 continue;
             }
 
